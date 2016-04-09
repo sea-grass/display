@@ -20,6 +20,26 @@
       body > div, body > input {
         font-size: initial;
       }
+      .overlay {
+            position: fixed;
+                top: Calc(50% - 200px);
+                    left: Calc(50% - 200px);
+                        background: rgba(255,255,200,0.5);
+                            width:400px;
+                                height:400px;
+                                    text-align:center;
+      }
+      .overlay .spinner {
+            color: red;
+      }
+      .overlay .spinner::before {
+            content: "spinning..."
+      }
+      .overlay div {
+            margin: 0 auto;
+                position: relative;
+                    top: Calc(50% - 20px);
+      }
     </style>
   </head>
   <body>

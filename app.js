@@ -92,6 +92,14 @@
   var container = new Cel({
     children: [
       {
+        children: [
+          {
+            type: "h6",
+            innerText: "Web worker integration"
+          }
+        ]
+      },
+      {
         type: "label",
         innerHTML: "n",
         attrs: { for: "n" }
@@ -140,38 +148,7 @@
     //Hide the container
     container.style.display = "none";
 
-    var canvas = new Cel({
-      type: "canvas",
-      attrs: {
-        width: n,
-        height: n,
-        style: "border: 1px solid #ececec"
-      }
-    });
-    var canvas_container = new Cel({
-      classes: ['render'],
-      children: [
-        {
-          innerHTML: "n="+n+" - v="+v
-        },
-        canvas
-      ]
-    });
-
-    var ctx = canvas.getContext("2d");
-    var id = ctx.createImageData(1, 1);
-    //document.body.appendChild(canvas_container);
-    document.body.appendChild(canvas);
-
-    var draw = DrawFunc(n, v, ctx, id, style);
-
-    draw(n, v);
-
-
-    console.log("TODO, do like, stuff");
-
-
-
+    draw(n, v,style);
 
     //Show the container again
     container.style.display = "";
@@ -227,16 +204,6 @@
       data[_g] = g;
       data[_b] = b;
      }
-     /*
-     for (var x = 0; x < image.width; x++) {
-        for (var y = 0; y < image.height; y++) {
-          data[y*image_canvas.width + x + 0] = 0;
-          data[y*image_canvas.width + x + 1] = 0;
-          data[y*image_canvas.width + x + 2] = 0;
-          data[y*image_canvas.width + x + 3] = 0;
-        }
-     }
-     */
      image_ctx.putImageData(image_id, 0, 0);
    }
 
@@ -257,146 +224,90 @@
       throw "Assert failed: " + message;
     }
   }
-
-    /**
-     * DrawFunc
-     * Returns a curried version of draw
-     */
-    function DrawFunc(_n, _v, ctx, id, style) {
-      return draw;
-    function draw(n, v) {
+    function draw(n, v,style) {
       n = Number.isInteger(n) ? n : _n;
       v = Number.isInteger(v) ? v : _n;
 
-      var pixels = new Array(n*n);
-      //starting pixel
-      pixels.last = {
-        r: 0,
-        g: 0,
-        b: 0,
-        a: 255
-      };
-
-      function to1d(x, y) {
-        return x * n + y; //where n is the # of columns (x)
-      }
-      id.data[0] = 0; //r
-      id.data[1] = 0; //g
-      id.data[2] = 0; //b
-      id.data[3] = 255; //a
-      for (var x = 0; x < n; x++) {
-        for (var y = 0; y < n; y++) {
-          var index = to1d(x, y);
-
-          var r,g,b;
-
-          r = pixels.last.r;
-          g = pixels.last.g;
-          b = pixels.last.b;
-
-          b += v;
-          if (b > 255) {
-            b = b - 255;
-            g += v;
-            if (g > 255) {
-              g = g - 255;
-              r += v;
-              if (r > 255) {
-                r = r - 255;
-              }
+      var myWorker = new Worker("./worker.js");
+      myWorker.onmessage = function(e) {
+        var overlay = {
+          classes: ["overlay"],
+          children: [
+            {
+              classes: ["spinner"]
+            },
+            {
+              innerText: "Generating..."
+            },
+            {
+              innerText: "n="+n+" v="+v
             }
-          }
-
-          pixels[index] = {
-            r: r,
-            g: g,
-            b: b,
-            a: 255
-          };
-          pixels.last = pixels[index];
-
-          /*
-           * Save the drawing for after all pixels have been calculated
-          id.data[0] = r;
-          id.data[1] = g;
-          id.data[2] = b;
-
-          ctx.putImageData(id, x, y);
-          */
-        }
-      }
-      switch (style) {
-
-        case 'individual':
-          var old_ctx = ctx, old_id = id;
-          var new_canvas = new Cel({
-            type: "canvas",
-            attrs: {
-              width: n,
-              height: n
-            }
-          });
-          //swap out the old canvas with the new one
-          //TODO: See below 'meh' todo
-          //ctx.canvas.parentElement.appendChild(new_canvas);
-          ctx = new_canvas.getContext("2d");
-          id = ctx.createImageData(1, 1);
-        case 'overlay':
-        default:
-          //do nothing, use existing ctx value
-      }
-      for (var x = 0; x < n; x++) {
-        for (var y = 0; y < n; y++) {
-          var pixel = pixels[to1d(x,y)];
-
-          id.data[0] = pixel.r;
-          id.data[1] = pixel.g;
-          id.data[2] = pixel.b;
-          id.data[3] = pixel.a;
-
-          ctx.putImageData(id, x, y);
-        }
-      }
-
-      var img = new Cel({
-        type:"img",
-        
+          ]
+        };
+        var canvas = new Cel({
+          type: "canvas",
           attrs: {
-            width: _n*2, 
-            height: _n*2, 
+            width: n,
+            height: n
+          }
+        });
+        var ctx = canvas.getContext("2d");
+
+        var data = e.data;
+        console.log(data, "from worker");
+        overlay = new Cel(overlay);
+        document.body.appendChild(overlay);
+        setTimeout(function() {
+          console.log("Teem oot!");
+        drawPixelsToCanvas(ctx,style,data.pixels,n);
+        var img = new Cel({
+          type: "img",
+          attrs: {
+            width: n*2,
+            height: n*2,
             src: ctx.canvas.toDataURL()
           }
-      });
-      switch (style) {
+        });
+        document.body.appendChild(img);
+        overlay.remove();
+        myWorker.terminate();
+        },50);
 
-        case 'individual':
-          //add the old canvas back to the same parent as the other one
-          //ctx.canvas.parentElement.appendChild(old_ctx.canvas);
-          console.log("x");
-          ctx.canvas.remove();
-          //restore original values
-          ctx = old_ctx;
-          id = old_id;
-
-          
-        case 'overlay':
-        default:
-          //do nothing, use existing ctx value
       }
-      //Swap out the canvas with the image version
-      //TODO: Meh fix this swap later
-      document.body.appendChild(img);
-      //ctx.canvas.parentElement.appendChild(img);
-      ctx.canvas.remove();
+      myWorker.postMessage([n,v]);
+      /*
       if (style === 'individual' || style === 'overlay') {
         if (n < 1) return;
         draw(n-1, v);
       }
-    }
+      */
     }
     function doClear() {
       container.remove();
       document.body.innerHTML = "";
       document.body.appendChild(container);
     }
+    function drawPixelsToCanvas(ctx,style,pixels,n) {
+      var id = ctx.createImageData(1,1);
+      console.log(pixels,"to da CANVAASS");
+      for (var x = 0; x < n; x++) {
+        for (var y = 0; y < n; y++) {
+          var pixel = pixels[to1d(x,y,n)];
+
+          try {
+            id.data[0] = pixel.r;
+            id.data[1] = pixel.g;
+            id.data[2] = pixel.b;
+            id.data[3] = pixel.a;
+          } catch(e) {
+            console.log(e, pixel, x, y, to1d(x,y));
+          }
+
+          ctx.putImageData(id, x, y);
+        }
+      }
+    }
+      function to1d(x, y,n) {
+        return x * n + y; //where n is the # of columns (x)
+      }
 }())
