@@ -12,6 +12,11 @@ App.style_options = [
   ["Multiple (overlay)", "overlay"],
   ["Multiple (individual)", "individual"]
 ];
+App.notes = [
+  "Only single style works at the moment.",
+  "1 <= n <= 4000* -- *4000 is the recommended maximum",
+  "1 <= v <= 255"
+];
 /* Define application elements */
 var n_input, v_input, style_select, start_button, clear_button;
 
@@ -77,7 +82,22 @@ App.cel = {
       children: [{
         type: "h6",
         innerText: "Web worker integration"
-      }, {
+      }, 
+      {
+        type: "ul",
+        classes: ["notes"],
+        children: (function(){
+          var notes = [];
+          for (var i = 0; i < App.notes.length; i++) {
+            notes.push({
+              type: "li",
+              innerText: App.notes[i]
+            });
+          }
+          return notes;
+        }())
+      },
+      {
         classes: ["workers"],
         innerText: "worker list"
       }]
@@ -141,6 +161,9 @@ App.startRender = function() {
 App.doClear = function() {
   console.log("yeeeo!");
   console.log("clea!");
+  App.dom.remove();
+  document.body.innerHTML="";
+  document.body.appendChild(App.dom);
 };
 App.draw = function(n, v, style) {
   var myWorker;
