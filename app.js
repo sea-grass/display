@@ -126,7 +126,11 @@
 //        attrs: { for: "overlay" }
 //      },
       start_button,
-      clear_button
+      clear_button,
+      {
+        classes: ["workers"],
+        innerText: "worker list"
+      }
     ]
   });
 
@@ -140,8 +144,8 @@
     assert("N and V are integers", Number.isInteger(n), Number.isInteger(v));
     style = style_select.value;
 
-    if (n > 300) {
-      var doContinue = confirm("You entered an n greater than 300 (n="+n+"). This may take a long time. Proceed?");
+    if (n > 4000) {
+      var doContinue = confirm("You entered an n greater than 4000 (n="+n+"). This may take a long time. Proceed?");
       if (!doContinue) return;
     }
 
@@ -229,7 +233,14 @@
       v = Number.isInteger(v) ? v : _n;
 
       var myWorker = new Worker("./worker.js");
+      //Add to worker list
+      document.querySelector(".workers").appendChild(new Cel({
+        classes:["worker","n"+n+"v"+v],
+        innerText: "n: " + n + " v: " + v
+      }));
       myWorker.onmessage = function(e) {
+        //Remove from worker list
+        document.querySelector(".worker.n"+n+"v"+v).remove();
         var overlay = {
           classes: ["overlay"],
           children: [
@@ -252,7 +263,6 @@
           }
         });
         var ctx = canvas.getContext("2d");
-
         var data = e.data;
         console.log(data, "from worker");
         overlay = new Cel(overlay);
@@ -262,6 +272,7 @@
         drawPixelsToCanvas(ctx,style,data.pixels,n);
         var img = new Cel({
           type: "img",
+          classes: ["render"],
           attrs: {
             width: n*2,
             height: n*2,
@@ -288,26 +299,27 @@
       document.body.appendChild(container);
     }
     function drawPixelsToCanvas(ctx,style,pixels,n) {
-      var id = ctx.createImageData(1,1);
+      var id = ctx.createImageData(n,n);
       console.log(pixels,"to da CANVAASS");
       for (var x = 0; x < n; x++) {
         for (var y = 0; y < n; y++) {
           var pixel = pixels[to1d(x,y,n)];
 
           try {
-            id.data[0] = pixel.r;
-            id.data[1] = pixel.g;
-            id.data[2] = pixel.b;
-            id.data[3] = pixel.a;
+            id.data[0 * to1d(x,y,n)] = pixel.r;
+            id.data[1 * to1d(x,y,n)] = pixel.g;
+            id.data[2 * to1d(x,y,n)] = pixel.b;
+            id.data[3 * to1d(x,y,n)] = pixel.a;
           } catch(e) {
             console.log(e, pixel, x, y, to1d(x,y));
           }
 
-          ctx.putImageData(id, x, y);
+
         }
       }
+      ctx.putImageData(id, 0, 0);
     }
       function to1d(x, y,n) {
-        return x * n + y; //where n is the # of columns (x)
+        return y * n + x; //where n is the # of columns (x)
       }
 }())
