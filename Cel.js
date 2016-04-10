@@ -1,6 +1,8 @@
 (function() {
   "use strict";
-  var Cel = function Cel(options){ return Cel.create(options); };
+  var Cel = function Cel(options) {
+    return Cel.create(options);
+  };
   /* Cel.create(options) -- the default functionality of Cel.js; creates an html element from the specified options */
   Cel.create = function(options) {
     var option, el;
@@ -85,35 +87,35 @@
     var basic_options, el;
     var selector, rule;
     var styleText = "";
-    
+
     options = options || {};
     basic_options = options;
     if (basic_options["innerText"]) delete basic_options["innerText"];
     if (basic_options["innerHTML"]) delete basic_options["innerHTML"];
     if (basic_options["children"]) delete basic_options["children"];
     basic_options["type"] = "style";
-    
+
     el = new Cel(basic_options);
-    
+
     options["rules"] = options["rules"] || {};
-    
+
     for (selector in options["rules"]) {
       if (options["rules"].hasOwnProperty(selector)) {
         styleText += selector + " { ";
         for (rule in options["rules"][selector]) {
           if (options["rules"][selector].hasOwnProperty(rule)) {
-            styleText += rule + ": " + options["rules"][selector][rule] + "; "; 
+            styleText += rule + ": " + options["rules"][selector][rule] + "; ";
           }
         }
         styleText += "} ";
       }
     }
-    
+
     el.innerText = styleText;
-    
+
     return el;
   };
-  
+
   Object.defineProperty(window, "Cel", {
     "value": Cel
   });
