@@ -214,17 +214,8 @@ App.drawPixelsToCanvas = function(settings) {
   pixels = settings.pixels;
 
   id = ctx.createImageData(n, n);
-  for (var x = 0; x < n; x++) {
-    for (var y = 0; y < n; y++) {
-      var i = to1d(x, y, n);
-      var pixel = pixels[i];
-
-      //just draw the colour of the pixel onto the pixel in the canvas
-      id.data[i * 4 + 0] = pixel.colour.r;
-      id.data[i * 4 + 1] = pixel.colour.g;
-      id.data[i * 4 + 2] = pixel.colour.b;
-      id.data[i * 4 + 3] = pixel.colour.a;
-    }
+  for (var i = 0; i < n * n * 4; i++) {
+    id.data[i] = pixels[i];
   }
   ctx.putImageData(id, 0, 0);
 };

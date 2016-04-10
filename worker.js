@@ -1,6 +1,8 @@
 /**
  *  Upon receiving image data values from the client, generate
  *  image data to be rendered by the client
+ *  Returns:
+ *  @imageData - A Uint8Array[n*n*4] with rgba values for the n*n pixels
  */
 onmessage = function(e) {
   console.log("Worker received message", e);
@@ -30,19 +32,12 @@ onmessage = function(e) {
 };
 
 function generateImageData(options) {
-  var data = new Array(options.width * options.height);
+  var data = new Uint8Array(options.width * options.height * 4);
   var n = options.width; //assuming width and height are the same
-  var lastPixel = {
-    colour: {
-      r: 0,
-      g: 0,
-      b: 0,
-      a: 255
-    }
-  };
+  var lastPixel = new Uint8Array([0, 0, 0, 255]);
   for (var x = 0; x < options.width; x++) {
     for (var y = 0; y < options.height; y++) {
-      var thisPixel;
+      var thisPixel, i;
       switch (options.generator.name) {
         //pass x, y, prev.colour as options to gen
         case 'lastPixel':
@@ -54,8 +49,16 @@ function generateImageData(options) {
             prev: lastPixel
           });
       }
-      data[to1d(x, y, n)] = thisPixel;
-      lastPixel.colour = thisPixel.colour;
+      i = to1d(x, y, n);
+      data[i * 4 + 0] = thisPixel[0];
+      data[i * 4 + 1] = thisPixel[1];
+      data[i * 4 + 2] = thisPixel[2];
+      data[i * 4 + 3] = thisPixel[3];
+
+      lastPixel[0] = thisPixel[0];
+      lastPixel[1] = thisPixel[1];
+      lastPixel[2] = thisPixel[2];
+      lastPixel[3] = thisPixel[3];
     }
   }
 
@@ -63,29 +66,19 @@ function generateImageData(options) {
 }
 
 function lastPixelGen(data) {
-  var lastColour = data.prev.colour;
-  var thisColour = {};
+  var thisPixel = new Uint8Array(data.prev);
   var v = data.v;
-  thisColour.r = lastColour.r;
-  thisColour.g = lastColour.g;
-  thisColour.b = lastColour.b;
-  thisColour.a = lastColour.a;
 
-  thisColour.b += v;
-  if (thisColour.b > 255) {
-    thisColour.b -= 255;
-    thisColour.g += v;
-    if (thisColour.g > 255) {
-      thisColour.g -= 255;
-      thisColour.r += v;
-      if (thisColour.r > 255) {
-        thisColour.r -= 255;
+  //with uint8 we get our mod behaviour for free
+  if ((thisPixel[2] += v) > 255) {
+    if ((thisPixel[1] += v) > 255) {
+      if ((thisPixel[0] += v) > 255) {
+        //do nothing here...yet
       }
     }
   }
-  return {
-    colour: thisColour
-  };
+
+  return thisPixel;
 }
 
 function to1d(x, y, n) {
