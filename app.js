@@ -76,7 +76,7 @@ clear_button = {
 };
 
 App.cel = {
-  classes: ["container"],
+  classes: ["container","hidden"],
   children: [{
       classes: ["description"],
       children: [{

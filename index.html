@@ -6,6 +6,41 @@
       Almost like display but not
     </title>
     <style>
+      /* grid.css - taken from w3schools.com/css/css_rwd_grid.asp */
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        overflow: hidden;
+      }
+      [class*="col-"] {
+        float: left;
+        padding: 0;
+        margin: 0;
+        border: 0.5px solid rgba(0,0,0,0);
+      }
+      .col-1 {width: 8.33%;}
+      .col-2 {width: 16.66%;}
+      .col-3 {width: 25%;}
+      .col-4 {width: 33.33%;}
+      .col-5 {width: 41.66%;}
+      .col-6 {width: 50%;}
+      .col-7 {width: 58.33%;}
+      .col-8 {width: 66.66%;}
+      .col-9 {width: 75%;}
+      .col-10 {width: 83.33%;}
+      .col-11 {width: 91.66%;}
+      .col-12 {width: 100%;}
+      .row:after {
+        content: "";
+        clear: both;
+        display: block;
+      }
+    </style>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
       .render {
         display: inline-block;
         border: 1px solid #cecece;
@@ -41,9 +76,266 @@
                 position: relative;
                     top: Calc(50% - 20px);
       }
+      .container {
+            position: fixed;
+                top: 0;
+                    left: 0;
+                        width: 100%;
+                            height: 130px;
+                                background: rgba(200,200,200,0.5);
+      }
+      .container .title {
+            position:absolute;
+                top:0;
+                    width: 100%;
+                        height: 40px;
+      }
+      .render_form {
+            position: absolute;
+                top:40px;
+                    height: Calc(130px - 40px);
+                        background: rgba(0,0,255,0.5);
+      }
+      .mobile-app {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .mobile-app .menu {
+        background: rgba(255,255,255,0.5);
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        transition: 1s left;
+      }
+      .mobile-app .app-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: 1s left;
+      }
+      .mobile-app.menu-open .menu {
+        left: 0%;
+        transition: 0.5s left;
+      }
+      .mobile-app.menu-open .app-container {
+        left: 50%;
+        transition: 0.5s left;
+      }
+      .menu-toggle {
+        width: 25px;
+        height: 25px;
+        background: red;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+      }
+      ul.thumbnail-list {
+
+      }
+      .thumbnail-list li {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+      }
+      .thumbnail-list li:nth-child(1) img,
+      .thumbnail-list li:nth-child(5) img {
+        width: 30%;
+        height: 30%;
+      }
+      .thumbnail-list li:nth-child(2) img,
+      .thumbnail-list li:nth-child(4) img {
+        width: 60%;
+        height: 60%;
+      }
+      .thumbnail-list li:nth-child(3) img {
+        width: 100%;
+        height: 100%;
+      }
+      .thumbnail-list li.current img {
+        border: 1px solid red;
+      }
+      .row.options {
+            height: 60px;
+                background: orange;
+      }
+      .options > * {
+            height: 40px;
+                /* position: relative; */
+                /* top: 10px; */
+      }
+      .options > * > label,
+      .options > * > input,
+      .options > * > select {
+            display: inline-block;
+                top: 0;
+                    left: 0;
+                        position:relative;
+                            height: 100%;
+                                font-size: 0.9em;
+      }
+      .options > * > label {
+            width: 29%;
+                text-align: center;
+                    font-size:2em;
+                        overflow-y:hidden;
+      }
+      .options > * > input,
+      .options > * > select {
+            width:66.33%;
+      }
+      body *:not(.hidden) {
+        opacity: 1;
+        display: initial;
+        transform 0.5s opacity;
+      }
+      .hidden {
+        opacity: 0;
+        display: none;
+        transform 0.5s opacity;
+      }
     </style>
   </head>
   <body>
+    <div class="mobile-app">
+      <div class="menu">
+        <ul>
+          <li class="app-toggle">
+            <a>Toggle between app and responsive mode</a>
+          </li>
+          <li>
+            <a>Option 2</a>
+          </li>
+          <li>
+            <a>Option 3</a>
+          </li>
+          <li>
+            <a>Option 4</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="app-container">
+        <div class="row options">
+          <div class="col-4">
+            <label>n</label>
+            <input type="text"/>
+          </div>
+          <div class="col-4">
+            <label>n</label>
+            <input type="text"/>
+          </div>
+          <div class="col-4">
+            <label>style</label>
+            <select>
+              <option>Single</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-10">
+            <div class="row">
+              <div class="col-6">
+                <button>Start</button>
+              </div>
+              <div class="col-6">
+                <button>Clear</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-1"></div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <ul class="thumbnail-list">
+              <li>
+                <img alt="-2"/>
+              </li>
+              <li>
+                <img alt="-1"/>
+              </li>
+              <li class="current">
+                <img alt="0"/>
+              </li>
+              <li>
+                <img alt="+1"/>
+              </li>
+              <li>
+                <img alt="+2"/>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-10 render-container">
+            <div class="row">
+              <img class="render" alt="render"/>
+            </div>
+            <div class="row">
+              <div class="description">description</div>
+            </div>
+          </div>
+          <div class="col-1"></div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <p>Footer</p>
+          </div>
+        </div>
+
+
+
+        <div class="header" style="display: none;">
+          <div class="title">
+            <div class="title">
+              Title
+            </div>
+            <div class="description">
+              Description (hidden, but toggled when title is clicked)
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="menu-toggle">=</div>
+    <script>
+      document.querySelector(".menu-toggle").addEventListener("click", (function(){
+    var hidden = true;
+    return function(e) {
+      if (hidden) {
+        document.querySelector(".mobile-app").classList.add("menu-open");
+        hidden = false;
+        } else {
+        document.querySelector(".mobile-app").classList.remove("menu-open");
+        hidden = true;
+        }
+    };    
+}()));
+      document.querySelector(".app-toggle").addEventListener("click", (function(){
+    var responsiveMode = true;
+    return function(e) {
+      if (responsiveMode) {
+        document.querySelector(".mobile-app").classList.add("hidden");
+        document.querySelector("body > .container").classList.remove("hidden");
+        responsiveMode = false;
+        } else {
+        document.querySelector(".mobile-app").classList.remove("hidden");
+        document.querySelector("body > .container").classList.add("hidden");
+        responsiveMode = true;
+        }
+    };    
+}()));
+    </script>
     <script src="./Cel.js"></script>
     <script src="./helpers.js"></script>
     <script src="./app.js"></script>
