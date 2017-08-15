@@ -1,0 +1,15 @@
+body {
+  background: #ccc;
+}
+.container {
+  width: 890px;
+  margin: 0 auto;
+  background: #eee;
+  height: 100%;
+  padding: 8px;
+}
+#app .log {
+  max-height: 100px;
+  overflow-y: scroll;
+}
+img { max-width: 100%; }
