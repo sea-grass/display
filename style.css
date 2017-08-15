@@ -12,4 +12,21 @@ body {
   max-height: 100px;
   overflow-y: scroll;
 }
-img { max-width: 100%; }
+
+.output {
+  line-height: 0;
+  position: relative;
+}
+.output img {
+  z-index: 0;
+  top: 0;
+  left: 0;
+  position: absolute;
+  max-width: 100%;
+}
+
+.output img:last-child {
+  z-index: 1;
+  top: 15px;
+  left: 15px;
+}

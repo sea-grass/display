@@ -9,7 +9,8 @@ App.defaults = {
 };
 
 var n_input = q("#n"),
-    v_input = q("#v");
+    v_input = q("#v"),
+    output = q("#app .output");
 
 n_input.value = App.defaults.n;
 v_input.value = App.defaults.v;
@@ -73,7 +74,7 @@ App.draw = function(n, v) {
     img.setAttribute("width", n * 2);
     img.setAttribute("title", "n: " + n + " - v: " + v);
 
-    document.body.appendChild(img);
+    output.appendChild(img);
 
     overlay.remove();
 
