@@ -24,6 +24,7 @@ onmessage = function(e) {
       }
     }
   });
+  
   postMessage({
     imageData: imageData,
     n: n,

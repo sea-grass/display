@@ -1,32 +1,19 @@
-body {
-  background: #ccc;
+html {
+  font-size: 20px;
 }
+
 .container {
-  width: 890px;
-  margin: 0 auto;
-  background: #eee;
-  height: 100%;
-  padding: 8px;
-}
-#app .log {
-  max-height: 100px;
-  overflow-y: scroll;
+  background: white;
+  display: flex;
+  justify-content: center;
 }
 
-.output {
-  line-height: 0;
-  position: relative;
-}
-.output img {
-  z-index: 0;
-  top: 0;
-  left: 0;
-  position: absolute;
-  max-width: 100%;
-}
-
-.output img:last-child {
-  z-index: 1;
-  top: 15px;
-  left: 15px;
+.theatre img {
+  width: 400px;
+  height: auto;
+  -ms-interpolation-mode: nearest-neighbor;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-pixelated;
+  image-rendering: pixelated;
 }

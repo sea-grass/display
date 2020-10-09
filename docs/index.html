@@ -6,33 +6,15 @@
       Display - An Abstract Pixel Art Generator
     </title>
     <meta name="description" content="An abstract pixel art generator"/>
+    <link rel="stylesheet" href="./bulma.min.css" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="./style.css"/>
     <style>
     </style>
   </head>
   <body>
     <div class="container">
-      <div id="app">
-        <div class="header">
-          <h1 class="title">Display</h1>
-          <p class="tagline">An abstract pixel art generator</p>
-        </div>
-        <form class="interface">
-          <label for="n" title="Width and height of the image">N</label>
-          <input id="n" name="n" type="number"/>
-          <label for="v" title="Variance of colour between each pixel">V</label>
-          <input id="v" name="v" type="number"/>
-          <input type="submit" value="Render"/>
-        </form>
-        <div class="log">
-          <ul></ul>
-        </div>
-        <div class="output">
-
-        </div>
-      </div>
+      <main id="app"></main>
     </div>
-    <script src="./helpers.js"></script>
-    <script src="./the-app.js"></script>
+    <script src="app.js" type="module"></script>
   </body>
 </html>
