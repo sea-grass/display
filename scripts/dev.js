@@ -8,7 +8,7 @@ startDevServer(
     process.env.DEV_PRIVATE_KEY,
     process.env.DEV_PRIVATE_CERT,
     process.env.DEV_PORT,
-    path.join(__dirname, '../public')
+    path.join(__dirname, '../docs')
 )
 
 function startDevServer(key, cert, port, staticDir) {
