@@ -1,0 +1,24 @@
+{
+  "name": "display",
+  "version": "1.0.0",
+  "description": "## An Abstract Pixel Art Generator",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node ./scripts/dev.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sea-grass/display.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sea-grass/display/issues"
+  },
+  "homepage": "https://github.com/sea-grass/display#readme",
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  }
+}
