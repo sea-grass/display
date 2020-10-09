@@ -46,7 +46,7 @@ function form(state) {
                 h("label", {for: "n" }, text("N")),
                 h("input", {
                     name:"n",
-                    id:"n",
+                    id:"n_range",
                     type:"range",
                     value: state.n,
                     oninput: ({target: {value}}) => setState({
@@ -69,7 +69,7 @@ function form(state) {
                 h("label", {for: "v" }, text("V")),
                 h("input", {
                     name:"v",
-                    id:"v",
+                    id:"v_range",
                     type:"range",
                     value: state.v,
                     oninput: ({target: {value}}) => setState({
@@ -103,13 +103,13 @@ function imagePreview(state) {
 
     if (!activeImage) {
         return [
-            h("img", {src: state.placeholderImage})
+            h("img", {src: state.placeholderImage, alt: "Placeholder Image"})
         ]
     }
 
     return [
         h("div", {}, [
-            h("img", {src:activeImage.src}),
+            h("img", {src:activeImage.src, alt: `Generated pixel art where values are n=${activeImage.n} and v=${activeImage.v}`}),
             h("div", {class:"level"}, [
                 h("span", {class:"level-item"}, text(`N=${activeImage.n}`)),
                 h("span", {class:"level-item"}, text(`V=${activeImage.v}`))
@@ -126,6 +126,7 @@ function history(state) {
             h("ul", {}, state.images.map((image, i) => 
                 h("li", {}, [
                     h("a", {
+                        href: "#loadPreviousImage-"+image.n+"-"+image.v,
                         class: state.currentImageIndex === i ? 'active': '',
                         onclick: () => setState({
                             ...state,
@@ -134,7 +135,7 @@ function history(state) {
                             currentImageIndex: i
                         })
                     }, [
-                        h("img", {src: image.src, width: state.thumbnailSize, height: state.thumbnailSize}),
+                        h("img", {src: image.src, width: state.thumbnailSize, height: state.thumbnailSize, alt:`Thumbnail for generated image with values n=${image.n} and v=${image.v}`}),
                         text(`N=${image.n}, V=${image.v}`)
                     ])
                 ])))
