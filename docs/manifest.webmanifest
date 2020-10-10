@@ -1,0 +1,25 @@
+{
+    "short_name": "Display",
+    "name": "Display: An abstract pixel art generator",
+    "description": "An abstract pixel art generator",
+    "icons": [
+        {
+            "src": "/images/n192v26.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "maskable"
+          },
+          {
+            "src": "/images/n512v9.png",
+            "type": "image/png",
+            "sizes": "512x512"
+          }
+    ],
+    "start_url": "/?source=pwa",
+    "background_color": "white",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "white",
+    "shortcuts": [
+    ]
+  }

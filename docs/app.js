@@ -13,6 +13,10 @@ async function main() {
         thumbnailSize: 32,
         placeholderImage: 'https://placehold.it/1x1'
     });
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js');
+    }
 }
 
 async function setState(state) {
