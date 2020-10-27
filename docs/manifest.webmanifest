@@ -4,13 +4,13 @@
     "description": "An abstract pixel art generator",
     "icons": [
         {
-            "src": "/images/n192v26.png",
+            "src": "./images/n192v26.png",
             "type": "image/png",
             "sizes": "192x192",
             "purpose": "maskable"
           },
           {
-            "src": "/images/n512v9.png",
+            "src": "./images/n512v9.png",
             "type": "image/png",
             "sizes": "512x512"
           }
