@@ -2,18 +2,24 @@ html {
   font-size: 20px;
 }
 
-.container {
-  background: white;
-  display: flex;
-  justify-content: center;
+.theatre {
+  text-align: center;
 }
 
-.theatre img {
-  width: 400px;
-  height: auto;
+.theatre img,
+.is-pixelated {
   -ms-interpolation-mode: nearest-neighbor;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: -moz-crisp-edges;
   image-rendering: -o-pixelated;
   image-rendering: pixelated;
+}
+
+.theatre img {
+  width: 400px;
+  height: auto;
+}
+
+.main-container {
+  padding: 1.5rem;
 }
